@@ -1,7 +1,3 @@
--- Joins and Relationships Assignment
--- Author: Marymagdalene
--- Date: 22/09/2025
-
 -- ==========================================
 -- Question 1: INNER JOIN
 -- ==========================================
@@ -16,8 +12,8 @@ SELECT
 FROM employees e
 INNER JOIN offices o ON e.officeCode = o.officeCode;
 
--- Note: INNER JOIN returns only records that have matching values in both tables
--- This will show employees who have a valid office assignment
+-- Note: INNER JOIN returns only employees who have a matching office assignment
+-- This will show all employees since every employee in this database has a valid officeCode
 
 
 -- ==========================================
@@ -33,9 +29,9 @@ SELECT
 FROM products p
 LEFT JOIN productlines pl ON p.productLine = pl.productLine;
 
--- Note: LEFT JOIN returns all records from the left table (products)
--- and matching records from the right table (productlines)
--- If no match exists, NULL values are returned for productlines columns
+-- Note: LEFT JOIN returns all records from products table
+-- and matching records from productlines table
+-- In this database, all products have matching product lines, so this will return all products
 
 
 -- ==========================================
@@ -54,31 +50,60 @@ FROM customers c
 RIGHT JOIN orders o ON c.customerNumber = o.customerNumber
 LIMIT 10;
 
--- Note: RIGHT JOIN returns all records from the right table (orders)
--- and matching records from the left table (customers)
--- LIMIT 10 restricts the result to first 10 records
--- This will show the first 10 orders even if some don't have customer details
+-- Note: RIGHT JOIN returns all records from orders table (right table)
+-- and matching records from customers table (left table)
+-- LIMIT 10 restricts the result to first 10 orders
+-- In this database, all orders have matching customers
 
 
 -- ==========================================
--- Additional Examples and Best Practices
+-- Additional Examples and Verification Queries
 -- ==========================================
+
+-- Query to verify table structures:
+-- DESCRIBE employees;
+-- DESCRIBE offices;
+-- DESCRIBE products;
+-- DESCRIBE productlines;
+-- DESCRIBE customers;
+-- DESCRIBE orders;
+
+-- Query to count records in each table:
+-- SELECT 'employees' as table_name, COUNT(*) as record_count FROM employees
+-- UNION ALL
+-- SELECT 'offices', COUNT(*) FROM offices
+-- UNION ALL
+-- SELECT 'products', COUNT(*) FROM products
+-- UNION ALL
+-- SELECT 'productlines', COUNT(*) FROM productlines
+-- UNION ALL
+-- SELECT 'customers', COUNT(*) FROM customers
+-- UNION ALL
+-- SELECT 'orders', COUNT(*) FROM orders;
+
+-- Sample data preview queries:
+-- SELECT * FROM employees LIMIT 5;
+-- SELECT * FROM offices LIMIT 5;
+-- SELECT * FROM products LIMIT 5;
+
 /*
-JOIN Types Summary:
+JOIN Types Explanation:
 1. INNER JOIN: Returns only matching records from both tables
-2. LEFT JOIN: Returns all records from left table + matching from right
-3. RIGHT JOIN: Returns all records from right table + matching from left
-4. FULL OUTER JOIN: Returns all records when there's a match in either table
+2. LEFT JOIN: Returns all records from left table + matching from right table
+3. RIGHT JOIN: Returns all records from right table + matching from left table
+
+Database Schema Notes:
+- employees table has: employeeNumber, lastName, firstName, email, officeCode, etc.
+- offices table has: officeCode, city, phone, addressLine1, country, etc.
+- products table has: productCode, productName, productLine, productVendor, etc.
+- productlines table has: productLine, textDescription, etc.
+- customers table has: customerNumber, customerName, etc.
+- orders table has: orderNumber, orderDate, shippedDate, status, customerNumber, etc.
 
 Best Practices:
-- Always use table aliases (e.g., 'e' for employees) for cleaner code
+- Always use table aliases (e.g., 'e' for employees) for cleaner, readable code
 - Specify column names with table prefixes to avoid ambiguity
 - Use meaningful alias names that make sense in context
-- Comment your queries to explain the business logic
-- Test queries with small datasets first
-
-Performance Tips:
-- Ensure JOIN columns are indexed for better performance
-- Use appropriate JOIN types based on your data requirements
-- Consider the order of tables in your JOIN for optimization
+- Test queries with small result sets first using LIMIT
+- Check for NULL values in JOIN conditions when using LEFT/RIGHT JOINs
 */
